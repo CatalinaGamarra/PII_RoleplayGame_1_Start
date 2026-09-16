@@ -102,7 +102,7 @@ namespace Ucu.Poo.RolePlayGame
     {
         public int Defense;
 
-        public Cape(int defense, int capeLife)
+        public Cape(int defense)
         {
 
             this.Defense = defense;

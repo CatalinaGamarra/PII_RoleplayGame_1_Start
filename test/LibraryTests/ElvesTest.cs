@@ -16,64 +16,58 @@ namespace Ucu.Poo.RolePlayGame.Tests
         }
 
         [Test]
-        public void Bow_WhenShootingWithArrows_DecreasesQuantity()
-        {
-            Elves.Bow bow = new Elves.Bow(5);
-
-            bow.shootArrow();
-
-            Assert.That(bow.quantity, Is.EqualTo(4));
-        }
-
-        [Test]
-        public void Bow_WhenThereAreNoArrows_DoesNotShoot()
-        {
-            Elves.Bow bow = new Elves.Bow(0);
-
-            bow.shootArrow();
-
-            Assert.That(bow.quantity, Is.EqualTo(0));
-        }
-
-        [Test]
-        public void Bow_WhenCreated_HasDamageOfTwo()
-        {
-            Elves.Bow bow = new Elves.Bow(5);
-
-            Assert.That(bow.damage, Is.EqualTo(2));
-        }
-
-        [Test]
-        public void Cape_WhenProtectingAnElf_IncreasesDefense()
+        public void ShootWizard_WithBowAndArrows_DecreasesLifeAndConsumesArrow()
         {
             Elves elf = new Elves(10, 5, 3);
-            Elves.Cape cape = new Elves.Cape(2, 3);
+            elf.Bow = new Bow(5);
+            Wizard wizard = new Wizard("Gandalf", 4, 3, 20);
 
-            cape.protect(elf);
+            elf.shootWizard(wizard);
 
-            Assert.That(elf.Defense, Is.EqualTo(5));
+            // Daño: ataque 5 + arco 2 - defensa 3 = 4.
+            Assert.That(wizard.Life, Is.EqualTo(16));
+            Assert.That(elf.Bow.Quantity, Is.EqualTo(4));
         }
 
         [Test]
-        public void Cape_WhenProtectingAnElf_DecreasesCapeLife()
+        public void ShootWizard_WithoutArrows_DoesNotChangeLife()
         {
             Elves elf = new Elves(10, 5, 3);
-            Elves.Cape cape = new Elves.Cape(2, 3);
+            elf.Bow = new Bow(0);
+            Wizard wizard = new Wizard("Gandalf", 4, 3, 20);
 
-            cape.protect(elf);
+            elf.shootWizard(wizard);
 
-            Assert.That(cape.capeLife, Is.EqualTo(2));
+            Assert.That(wizard.Life, Is.EqualTo(20));
+            Assert.That(elf.Bow.Quantity, Is.EqualTo(0));
         }
 
         [Test]
-        public void Cape_WhenCapeLifeIsZero_DoesNotIncreaseDefense()
+        public void ShootElves_WhenTargetHasCape_CapeReducesDamage()
         {
             Elves elf = new Elves(10, 5, 3);
-            Elves.Cape cape = new Elves.Cape(2, 0);
+            elf.Bow = new Bow(5);
+            Elves target = new Elves(20, 1, 2);
+            target.Cape = new Cape(3);
 
-            cape.protect(elf);
+            elf.shootElves(target);
 
-            Assert.That(elf.Defense, Is.EqualTo(3));
+            // Daño: ataque 5 + arco 2 - (defensa 2 + capa 3) = 2.
+            Assert.That(target.Life, Is.EqualTo(18));
+        }
+
+        [Test]
+        public void ShootDwarf_WhenTargetHasHelmet_HelmetReducesDamage()
+        {
+            Elves elf = new Elves(10, 5, 3);
+            elf.Bow = new Bow(5);
+            Dwarf dwarf = new Dwarf("Gimli", 3, 1, 20);
+            dwarf.Helmet = new Helmet(4);
+
+            elf.shootDwarf(dwarf);
+
+            // Daño: ataque 5 + arco 2 - (defensa 1 + casco 4) = 2.
+            Assert.That(dwarf.Life, Is.EqualTo(18));
         }
     }
 }
