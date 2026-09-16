@@ -2,10 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-
-/// <summary>
-/// Clase para el personaje wizardo
-/// </summary>
 public class Wizard
 {
     public Wizard(string name, int attack, int defense, int life)
@@ -23,7 +19,7 @@ public class Wizard
     public MagicStaff Staff { get; set; }
     public SpellBook Book { get; set;}
 
-    public void MagicAtack(string spell, ref int targetLife, int defense)
+    public void MagicAtackWizard(string spell, Wizard wizard)
     {
         Spell choice = this.Book.GetSpell(spell);
         if (choice == null) { return;}
@@ -33,9 +29,10 @@ public class Wizard
         {
             attackDamage += this.Staff.Attack;
         }
-        targetLife -= attackDamage - defense;
+        wizard.Life -= attackDamage - wizard.Defense;
     }
-    public void MagicDefense(string spell, ref int targetDefense)
+
+    public void MagicDefense(string spell)
     {
         Spell choice = this.Book.GetSpell(spell);
         if (choice == null) { return;}
@@ -44,7 +41,7 @@ public class Wizard
         {
             def += this.Staff.Attack;
         }
-        targetDefense += def;
+        this.Defense += def;
     }
 }
 public class MagicStaff
