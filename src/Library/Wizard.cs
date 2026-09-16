@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Ucu.Poo.RolePlayGame;
 
 public class Wizard
 {
@@ -30,6 +31,32 @@ public class Wizard
             attackDamage += this.Staff.Attack;
         }
         wizard.Life -= attackDamage - wizard.Defense;
+    }
+
+    public void MagicAtackElves(string spell, Elves elves)
+    {
+        Spell choice = this.Book.GetSpell(spell);
+        if (choice == null) { return;}
+        int attackDamage = this.Attack;
+        attackDamage += choice.Power;
+        if (this.Staff != null)
+        {
+            attackDamage += this.Staff.Attack;
+        }
+        elves.Life -= attackDamage - elves.Defense;
+    }
+
+    public void MagicAtackDwarf(string spell, Dwarf dwarf)
+    {
+        Spell choice = this.Book.GetSpell(spell);
+        if (choice == null) { return;}
+        int attackDamage = this.Attack;
+        attackDamage += choice.Power;
+        if (this.Staff != null)
+        {
+            attackDamage += this.Staff.Attack;
+        }
+        dwarf.Life -= attackDamage - dwarf.Defense;
     }
 
     public void MagicDefense(string spell)

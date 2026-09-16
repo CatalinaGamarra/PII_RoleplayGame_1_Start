@@ -9,7 +9,25 @@ namespace Ucu.Poo.RolePlayGame
 
         public int Life { get; set; }
         public int Attack { get; set; }
-        public int Defense { get; set; }
+        private int defense;
+        public int Defense
+        { 
+            get
+            {
+                int totalDefense = defense;
+                if (this.Cape != null)
+                {
+                    totalDefense += this.Cape.Defense;
+                }
+                return totalDefense;
+            } 
+            set
+            {
+                defense = value;
+            } 
+        }
+        public Bow Bow { get; set; }
+        public Cape Cape { get; set; }
 
         public Elves(int Life, int Attack, int Defense)
         {
@@ -25,46 +43,70 @@ namespace Ucu.Poo.RolePlayGame
 
             life += 2;
         }
-
-        public class Bow
+        public void shootWizard(Wizard wizard)
         {
-            public int damage;
-            public int quantity;
-
-            public Bow(int quantity)
+            if (this.Bow != null)
             {
-                this.damage = 2;
-                this.quantity = quantity;
-            }
-            public void shootArrow()
-            {
-                if (quantity > 0)
+                if (wizard != null && this.Bow.shootArrow())
                 {
-                    quantity = quantity - 1;
+                    int attackTotal = this.Attack + this.Bow.Damage;
+                    wizard.Life -= attackTotal - wizard.Defense;
                 }
             }
         }
-
-        public class Cape
+        public void shootElves(Elves elves)
         {
-            public int defense;
-            public int capeLife;
-
-            public Cape(int defense, int capeLife)
+            if (this.Bow != null)
             {
-
-                this.defense = defense;
-                this.capeLife = capeLife;
-            }
-            public void protect(Elves elves)
-            {
-
-                if (capeLife > 0)
+                if (elves != null && this.Bow.shootArrow())
                 {
-
-                    elves.Defense = elves.Defense + defense; capeLife = capeLife - 1;
+                    int attackTotal = this.Attack + this.Bow.Damage;
+                    elves.Life -= attackTotal - elves.Defense;
+                }
+            }
+        }
+        public void shootDwarf(Dwarf dwarf)
+        {
+            if (this.Bow != null)
+            {
+                if (dwarf != null && this.Bow.shootArrow())
+                {
+                    int attackTotal = this.Attack + this.Bow.Damage;
+                    dwarf.Life -= attackTotal - dwarf.Defense;
                 }
             }
         }
     }
+    public class Bow
+    {
+        public int Damage { get; set; }
+        public int Quantity { get; set; }
+
+        public Bow(int quantity)
+        {
+            this.Damage = 2;
+            this.Quantity = quantity;
+        }
+        public bool shootArrow()
+        {
+            if (this.Quantity > 0)
+            {
+                this.Quantity = Quantity - 1;
+                return true;
+            }
+            return false;
+        }
+    }
+
+    public class Cape
+    {
+        public int Defense;
+
+        public Cape(int defense, int capeLife)
+        {
+
+            this.Defense = defense;
+        }
+    }
 }
+

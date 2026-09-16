@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Ucu.Poo.RolePlayGame;
 
 
 /// <summary>
@@ -15,16 +16,66 @@ public class Dwarf
         this.Defense = defense;
         this.Life = life;
     }
-    
+    public string Name { get; set; }
     public int Life { get; set; }
     public int Attack { get; set; }
-    public int Defense { get; set; }
+    private int defense;
+    public int Defense
+    { 
+        get
+        {
+            int totalDefense = defense;
+            if (this.Helmet != null)
+            {
+                totalDefense += this.Helmet.Defense;
+            }
+            return totalDefense;
+        } 
+        set
+        {
+            defense = value;
+        } 
+    }
+    public Axe Axe { get; set; }
+    public Helmet Helmet { get; set;}
 
-    public void PhycalAttack(ref int targetLife, int defense)
+    public void PhycalAttackDwarf(Dwarf dwarf)
     {
-        attackDamage = this.Attack;
-        attackDamage += this.Axe.Attack;
-        targetLife -= attackDamage - defense;
+        if (dwarf != null)
+        {
+            int attackDamage = this.Attack;
+            if (this.Axe != null)
+            {
+                attackDamage += this.Axe.Attack;
+            }
+            dwarf.Life -= attackDamage - dwarf.Defense;
+        }
+    }
+
+    public void PhycalAttackWizard(Wizard wizard)
+    {
+        if (wizard != null)
+        {
+            int attackDamage = this.Attack;
+            if (this.Axe != null)
+            {
+                attackDamage += this.Axe.Attack;
+            }
+            wizard.Life -= attackDamage - wizard.Defense;
+        }
+    }
+
+    public void PhycalAttackElves(Elves elves)
+    {
+        if (elves != null)
+        {
+            int attackDamage = this.Attack;
+            if (this.Axe != null)
+            {
+                attackDamage += this.Axe.Attack;
+            }
+            elves.Life -= attackDamage - elves.Defense;
+        }
     }
 }
 
@@ -34,6 +85,7 @@ public class Axe
     {
         this.Attack = attack;
     }
+    public int Attack { get; set; }
 }
 
 public class Helmet
@@ -42,4 +94,5 @@ public class Helmet
     {
         this.Defense = defense;
     }
+    public int Defense { get; set;}
 }
