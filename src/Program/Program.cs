@@ -18,7 +18,16 @@ namespace Ucu.Poo.RolePlayGame
         /// </summary>
         public static void Main(string[] args)
         {
-            Console.WriteLine("¡Hola mundo!");
+            Wizard wiz1 = new Wizard("Taba", 4, 10, 8);
+            Spell fireBall = new Spell("FireBall", 4, 0);
+            SpellBook book = new SpellBook();
+            book.AddSpell(fireBall);
+            wiz1.Book = book;
+
+            Wizard wiz2 = new Wizard("Atroden", 1, 5, 8);
+
+            wiz1.MagicAtackWizard("FireBall", wiz2);
+            Console.WriteLine(wiz2.Life);
         }
     }
 }
